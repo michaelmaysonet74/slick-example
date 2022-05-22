@@ -14,14 +14,14 @@ object Main extends App {
 
   val db = Database.forConfig("slick")
 
-  // db.run(
-  //   Products.table
-  //     .map(p => (p.title, p.creationDate))
-  //     += (
-  //       "El Ingenioso Hidalgo Don Quijote de La Mancha",
-  //       LocalDate.now()
-  //     )
-  // )
+  db.run(
+    Products.table
+      .map(p => (p.title, p.creationDate))
+      += (
+        "El Ingenioso Hidalgo Don Quijote de La Mancha",
+        LocalDate.now()
+      )
+  )
 
   val queryUsers = Users.table.sortBy(_.age).result
   val usersResult: Future[Seq[User]] = db.run(queryUsers)
@@ -29,5 +29,7 @@ object Main extends App {
   usersResult.foreach(println)
 
   Thread.sleep(100)
+
+  db.close()
 
 }
